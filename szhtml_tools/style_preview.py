@@ -16,6 +16,7 @@
 设计约束：色系判定由色值**计算**得出（HSL），不查表——风格资产增删时描述不腐坏。
 """
 import colorsys
+import html as _html
 import json
 import os
 import re
@@ -24,6 +25,11 @@ from typing import Any, Dict, List, Optional
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 STYLE_SYSTEM = os.path.join(HERE, '..', 'assets', 'style-system.json')
+
+
+def _esc(s):
+    """HTML 转义，防止用户输入（标题/偏好）注入标签或事件属性。"""
+    return _html.escape(str(s or ''), quote=True)
 
 
 # ---------------------------------------------------------------- 颜色 → 中文
@@ -244,8 +250,9 @@ def build_preview_html(candidates: List[Dict[str, Any]],
     刻意不引外部库：手绘即可，换来整页轻量、断网可开、可邮件发送。
     """
     prof = profile or {}
-    cond = ' · '.join([x for x in [prof.get('tone', ''), prof.get('scene', ''),
-                                   prof.get('purpose', '')] if x]) or '未指定偏好'
+    title = _esc(title)
+    cond = ' · '.join([_esc(x) for x in [prof.get('tone', ''), prof.get('scene', ''),
+                                         prof.get('purpose', '')] if x]) or '未指定偏好'
 
     cols = []
     base = candidates[0] if candidates else None
@@ -262,30 +269,33 @@ def build_preview_html(candidates: List[Dict[str, Any]],
         card = toks.get('card', bg)
         line = toks.get('line', '#DDDDDD')
         mu = toks.get('mu', ink)
+        # HTML 转义：防 style 属性注入
+        bg, ink, ac = _esc(bg), _esc(ink), _esc(ac)
+        card, line, mu = _esc(card), _esc(line), _esc(mu)
 
         rad = d['radius']
         tw = d['title_weight']
         tpx = max(13, min(20, round(d['title_px'] * 0.34)))
 
         sw = ''.join(
-            f'<span class="sw"><b style="background:{s["hex"]}"></b>'
-            f'<em>{s["role"]}</em><code>{s["hex"]}</code></span>'
+            f'<span class="sw"><b style="background:{_esc(s["hex"])}"></b>'
+            f'<em>{_esc(s["role"])}</em><code>{_esc(s["hex"])}</code></span>'
             for s in d['swatches']
         )
-        scenes = ''.join(f'<span class="chip">{t}</span>' for t in d['scenes']) or '—'
-        avoid = ''.join(f'<li>{t}</li>' for t in d['avoid']) or '<li>无特别限制</li>'
-        reason = ''.join(f'<li>{r}</li>' for r in (c.get('reasons') or [])[:3])
+        scenes = ''.join(f'<span class="chip">{_esc(t)}</span>' for t in d['scenes']) or '—'
+        avoid = ''.join(f'<li>{_esc(t)}</li>' for t in d['avoid']) or '<li>无特别限制</li>'
+        reason = ''.join(f'<li>{_esc(r)}</li>' for r in (c.get('reasons') or [])[:3])
 
         cols.append(f"""
     <section class="col{" pick" if idx == 1 else ""}">
       <div class="badge">{idx}</div>
       <header>
-        <h2>{c.get('label', '')}</h2>
-        <div class="sub">{c.get('en', '')} · 编号 {c.get('code', '')}
-          {f"· {c.get('family_label', '')}" if c.get('family_label') else ""}</div>
+        <h2>{_esc(c.get('label', ''))}</h2>
+        <div class="sub">{_esc(c.get('en', ''))} · 编号 {_esc(c.get('code', ''))}
+          {f"· {_esc(c.get('family_label', ''))}" if c.get('family_label') else ""}</div>
       </header>
-      <p class="mood">{d['mood']}</p>
-      {f'<p class="diff">与「{base.get("label", "")}」的区别：{diff}</p>' if diff else ''}
+      <p class="mood">{_esc(d['mood'])}</p>
+      {f'<p class="diff">与「{_esc(base.get("label", ""))}」的区别：{_esc(diff)}</p>' if diff else ''}
 
       <div class="stage" style="background:{bg};color:{ink};border-radius:{rad}px">
         <div class="eyebrow" style="color:{ac}">CHAPTER 01</div>
@@ -298,8 +308,8 @@ def build_preview_html(candidates: List[Dict[str, Any]],
       </div>
 
       <dl>
-        <dt>色系</dt><dd>{d['palette']}</dd>
-        <dt>形状</dt><dd>{d['form']}</dd>
+        <dt>色系</dt><dd>{_esc(d['palette'])}</dd>
+        <dt>形状</dt><dd>{_esc(d['form'])}</dd>
         <dt>适合</dt><dd class="chips">{scenes}</dd>
         <dt>不建议</dt><dd><ul class="avoid">{avoid}</ul></dd>
         {f'<dt>入选理由</dt><dd><ul class="avoid">{reason}</ul></dd>' if reason else ''}

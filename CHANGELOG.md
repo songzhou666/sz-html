@@ -2,6 +2,11 @@
 
 本文件记录 sz-html 的版本轨迹与改动。
 
+## [1.5.1] - 2026-10-17
+
+- 修复 `szhtml_tools/style_preview.py` 的 HTML 转义漏洞：`--title`/`--tone`/`--scene`/`--purpose` 及风格资产文本字段未经转义直接写入输出，可注入标签与事件属性（XSS）
+- 新增 `LICENSE.md` 专有许可具体条款（授权范围 / 禁止事项 / 免责声明 / 商用授权），README 许可证章节改为指向该文件
+
 ## [1.5.0] - 2026-10-17
 
 - 按 REA（Reverse Engineer Anything）拆解报告的 skill 工程范式对齐（8 大范式 + 10 条可移植做法）

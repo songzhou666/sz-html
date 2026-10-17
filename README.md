@@ -2,7 +2,7 @@
 
 > 让没摸过代码的人，一句话生成一份「能在网页上翻着看的 PPT」——像做 PPT 一样先出大纲、再选风格和页数、最后逐页制作。
 
-[![version](https://img.shields.io/badge/version-1.5.0-blue)](./CHANGELOG.md)
+[![version](https://img.shields.io/badge/version-1.5.1-blue)](./CHANGELOG.md)
 [![styles](https://img.shields.io/badge/内置风格-49-orange)](./assets/catalog/catalog_l0.md)
 [![license](https://img.shields.io/badge/license-Proprietary-lightgrey)](#许可证)
 [![deps](https://img.shields.io/badge/依赖-零外部API-success)](#依赖)
@@ -159,6 +159,7 @@ git clone https://github.com/songzhou666/sz-html.git
 
 | 版本 | 核心变化 |
 |------|---------|
+| v1.5.1 | 修复风格预览 HTML 转义漏洞；补专有许可条款 LICENSE.md |
 | v1.5.0 | 对齐 REA 工程范式：版本号单一来源校验、内容证据分级、按需读取路由表 |
 | v1.4.0 | 新增「风格可视化选型」：选型环节生成候选风格对比页「看脸选」 |
 | v1.3.0 | 新增 README / CHANGELOG / 反模式清单；SKILL 补触发契约；质量审核补打回迭代上限 |
@@ -179,4 +180,7 @@ git clone https://github.com/songzhou666/sz-html.git
 
 ## 许可证
 
-见 [SKILL.md](./SKILL.md) 的 `license` 字段（Proprietary）。
+本 Skill 为专有软件（Proprietary）。具体条款见 [LICENSE.md](./LICENSE.md)。
+
+- ✅ 允许：下载安装使用、将生成的演示文稿用于个人或商业用途
+- ❌ 禁止：未经许可复制/修改/再分发源码与风格资产、用于构建竞争性产品
