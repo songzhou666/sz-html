@@ -43,6 +43,8 @@ LLM 如何从 49 份风格资产中，用最少步数、最小 token 定位并�
 | `rules/html_guide.md` | S5 生成时常驻 | HTML 技术规范 |
 | `rules/quality_gate.md` | S6 审核时按需 | 五维审核与阻断判定 |
 | `rules/anti_patterns.md` | S5/S6 按需 | 反模式清单（凭记忆编配色/跳大纲/缺翻页等） |
+| `assets/style-system.json` | S3 选型时按需 | 49 风格机器可读 token（供 style_preview 生成对比页） |
+| `szhtml_tools/style_preview.py` | S3 选型必调 | 生成候选风格可视对比页（看脸选） |
 | `assets/common/skeleton_base.md` | 缺档兜底时按需 | 通用骨架 |
 
 ## 运行时动作铁律

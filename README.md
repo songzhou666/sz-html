@@ -2,7 +2,7 @@
 
 > 让没摸过代码的人，一句话生成一份「能在网页上翻着看的 PPT」——像做 PPT 一样先出大纲、再选风格和页数、最后逐页制作。
 
-[![version](https://img.shields.io/badge/version-1.3.0-blue)](./CHANGELOG.md)
+[![version](https://img.shields.io/badge/version-1.5.0-blue)](./CHANGELOG.md)
 [![styles](https://img.shields.io/badge/内置风格-49-orange)](./assets/catalog/catalog_l0.md)
 [![license](https://img.shields.io/badge/license-Proprietary-lightgrey)](#许可证)
 [![deps](https://img.shields.io/badge/依赖-零外部API-success)](#依赖)
@@ -123,7 +123,10 @@ sz-html/
 │   ├── catalog/             # L0 选型总目录 + 追问问题库
 │   ├── index/               # L1 七族索引
 │   ├── body/                # L2 四十九份风格正文资产
-│   └── common/              # 通用骨架 / 页面模式 / 配色指南
+│   ├── common/              # 通用骨架 / 页面模式 / 配色指南
+│   └── style-system.json    # 49 风格机器可读 token（供预览）
+├── szhtml_tools/
+│   └── style_preview.py     # 风格候选对比页生成器（看脸选）
 ├── rules/
 │   ├── load_protocol.md     # 三级加载协议
 │   ├── html_guide.md        # HTML 生成规范（翻页/进度/圆点）
@@ -156,6 +159,8 @@ git clone https://github.com/songzhou666/sz-html.git
 
 | 版本 | 核心变化 |
 |------|---------|
+| v1.5.0 | 对齐 REA 工程范式：版本号单一来源校验、内容证据分级、按需读取路由表 |
+| v1.4.0 | 新增「风格可视化选型」：选型环节生成候选风格对比页「看脸选」 |
 | v1.3.0 | 新增 README / CHANGELOG / 反模式清单；SKILL 补触发契约；质量审核补打回迭代上限 |
 | v1.2.0 | 底部新增圆点跳页（可点击圆点 + 当前页胶囊高亮 + 页数自适应） |
 | v1.1.0 | 流程升级为 PPT 式（新增大纲生成）；选型升级为「风格 + 页数」双定；新增左右翻页 + 底部进度条 |

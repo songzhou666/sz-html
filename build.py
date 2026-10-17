@@ -9,6 +9,7 @@ sz-html 打包脚本
   3. 包内顶层目录固定为 sz-html/（安装后即该目录名）。
 """
 import os
+import re
 import sys
 import zipfile
 
@@ -33,6 +34,39 @@ def fail(msg):
     sys.exit(1)
 
 
+def _read_version(path, pattern):
+    """从文件提取版本号，返回首个匹配；文件不存在或未命中返回 None。"""
+    if not os.path.exists(path):
+        return None
+    txt = open(path, encoding='utf-8').read()
+    m = re.search(pattern, txt, re.M)
+    return m.group(1) if m else None
+
+
+def verify_version():
+    """校验 SKILL.md / manifest / CHANGELOG 三处版本号一致（REA 范式：版本号单一来源）。"""
+    locations = [
+        (os.path.join(BASE_DIR, 'SKILL.md'),
+         r'^version:\s*([0-9]+\.[0-9]+\.[0-9]+)'),
+        (os.path.join(BASE_DIR, 'manifest', 'skill-manifest.yaml'),
+         r'^version:\s*([0-9]+\.[0-9]+\.[0-9]+)'),
+        (os.path.join(BASE_DIR, 'CHANGELOG.md'),
+         r'## \[([0-9]+\.[0-9]+\.[0-9]+)\]'),
+    ]
+    versions = {}
+    for path, pattern in locations:
+        rel = os.path.relpath(path, BASE_DIR)
+        v = _read_version(path, pattern)
+        if v is None:
+            fail(f'无法从 {rel} 解析版本号，请确认格式为 X.Y.Z')
+        versions[rel] = v
+    distinct = set(versions.values())
+    if len(distinct) > 1:
+        detail = '；'.join(f'{k}={v}' for k, v in versions.items())
+        fail(f'版本号不一致（REA 范式要求单一来源）：{detail}')
+    print(f'  版本校验通过（v{next(iter(distinct))}）')
+
+
 def precheck():
     print('[1/3] 前置校验...')
     skill_md = os.path.join(BASE_DIR, 'SKILL.md')
@@ -43,6 +77,7 @@ def precheck():
     asset_count = sum(len(files) for _, _, files in os.walk(ASSETS_DIR))
     if asset_count == 0:
         fail('资产目录为空，拒绝打包')
+    verify_version()
     print(f'  校验通过（资产 {asset_count} 个文件）')
 
 

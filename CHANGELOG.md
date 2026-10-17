@@ -2,6 +2,20 @@
 
 本文件记录 sz-html 的版本轨迹与改动。
 
+## [1.5.0] - 2026-10-17
+
+- 按 REA（Reverse Engineer Anything）拆解报告的 skill 工程范式对齐（8 大范式 + 10 条可移植做法）
+- 版本号单一来源：build.py 新增版本一致性校验（SKILL.md / manifest / CHANGELOG 三处不一致即打包失败）；修复 README 版本 badge 落后于 1.4.0
+- 内容证据分级（观察 / 推断 / 未知）：quality_gate.md 新增内容事实溯源三级分级，硬事实禁止「推断」后写精确值
+- SKILL.md 新增「按需读取路由」表（Read only the relevant guide）
+
+## [1.4.0] - 2026-10-17
+
+- 新增「风格可视化选型」：选型环节生成候选风格对比页（用真实色值各画一小段演示文稿小样），让客户「看脸选」而非凭编号猜
+- 新增 `assets/style-system.json`（49 风格机器可读 token）+ `szhtml_tools/style_preview.py`（色系中文描述 + 候选差异 + 对比页生成）
+- SKILL.md 新增「选型呈现铁律」（中文名打头、色系说人话、备选写差异、必附对比页）
+- anti_patterns 新增「选型只给编号」反模式
+
 ## [1.3.0] - 2026-10-15
 
 - 新增 `README.md`、`CHANGELOG.md`
